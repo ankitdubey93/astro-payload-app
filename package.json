@@ -1,0 +1,19 @@
+{
+  "name": "astro-payload-app",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ankitdubey93/astro-payload-app.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ankitdubey93/astro-payload-app/issues"
+  },
+  "homepage": "https://github.com/ankitdubey93/astro-payload-app#readme"
+}
