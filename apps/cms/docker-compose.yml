@@ -1,8 +1,11 @@
-# Optional local Postgres, for working without the hosted (Neon) database.
-# Point DATABASE_URL at postgresql://payload:payload@127.0.0.1:5442/payload
+# Local Postgres for development. From the repo root: `npm run db:up` / `npm run db:down`.
+# DATABASE_URL=postgresql://payload:payload@127.0.0.1:5442/payload
+name: astro-payload-app
+
 services:
   postgres:
     image: postgres:16
+    container_name: astro-payload-postgres
     restart: unless-stopped
     environment:
       POSTGRES_USER: payload
@@ -12,6 +15,12 @@ services:
       - '5442:5432'
     volumes:
       - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U payload -d payload']
+      interval: 2s
+      timeout: 5s
+      retries: 15
 
 volumes:
   pgdata:
+    name: astro-payload-pgdata

@@ -9,6 +9,8 @@
     "dev": "concurrently -n cms,web -c blue,magenta \"npm:dev:cms\" \"npm:dev:web\"",
     "dev:cms": "npm --prefix apps/cms run dev",
     "dev:web": "npm --prefix apps/web run dev",
+    "db:up": "docker compose -f apps/cms/docker-compose.yml up -d --wait",
+    "db:down": "docker compose -f apps/cms/docker-compose.yml down",
     "build": "npm --prefix apps/cms run build && npm --prefix apps/web run build",
     "seed": "npm --prefix apps/cms run seed",
     "types:sync": "npm --prefix apps/cms run generate:types && node scripts/sync-types.mjs",

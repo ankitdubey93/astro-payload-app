@@ -4,9 +4,11 @@ Website for a watch brand. Editors manage content in **Payload CMS** with a live
 
 > Content and branding are placeholders until the client's material arrives. Run `npm run seed` to load example data.
 
+📚 **Full documentation:** [`docs/`](docs/README.md) covers architecture, how Payload and Astro work and connect, Live Preview, the content model, and how-to processes.
+
 ```
 apps/
-  cms/   Payload 3 (Next.js) — admin panel at :3000/admin, REST API at :3000/api, Postgres (Neon)
+  cms/   Payload 3 (Next.js) — admin panel at :3000/admin, REST API at :3000/api, Postgres
   web/   Astro 7 (SSR, Node adapter) + React + Tailwind v4 — public site at :4321
 scripts/
   sync-types.mjs   copies Payload's generated types into apps/web
@@ -24,7 +26,7 @@ Fill in the env files:
 
 | Variable | Where | Notes |
 | --- | --- | --- |
-| `DATABASE_URL` | cms | Neon Postgres URL, or the local one from `apps/cms/docker-compose.yml` |
+| `DATABASE_URL` | cms | Dev: the local Docker Postgres (default in `.env.example`). Staging/prod: a hosted Postgres (not chosen yet) |
 | `PAYLOAD_SECRET` | cms | any long random string |
 | `PREVIEW_SECRET` | cms **and** web | same value in both |
 | `PREVIEW_API_KEY` (cms) / `PAYLOAD_API_KEY` (web) | both | same UUID in both; the seed assigns it to a `preview@example.com` user that Astro uses to read drafts |
@@ -33,6 +35,7 @@ Fill in the env files:
 Then:
 
 ```bash
+npm run db:up  # local Postgres in Docker (port 5442)
 npm run seed   # example series, watches, pages, nav + admin@example.com / changeme123
 npm run dev    # runs both apps
 ```
@@ -43,6 +46,7 @@ Open http://localhost:3000/admin and http://localhost:4321.
 
 | Script | What it does |
 | --- | --- |
+| `npm run db:up` / `db:down` | Start / stop the local dev Postgres container |
 | `npm run dev` | CMS + web together (`dev:cms` / `dev:web` for one) |
 | `npm run seed` | (Re)creates the placeholder content. Safe to re-run |
 | `npm run types:sync` | Regenerates Payload types and copies them to `apps/web/src/payload-types.ts`. **Run after changing any collection, global or block** |
@@ -81,7 +85,7 @@ In development Payload **pushes** schema changes to the database automatically. 
 npm --prefix apps/cms run payload migrate:create <name>
 ```
 
-Use a **separate database (or Neon branch) for production**. A database that has been through dev-push should not also be migrated.
+Use a **separate database for production**. A database that has been through dev-push should not also be migrated.
 
 ## Before going live (not done yet)
 
