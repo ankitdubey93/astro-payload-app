@@ -1,0 +1,28 @@
+---
+import Image from '../../components/Image.astro';
+import WatchCard from '../../components/WatchCard.astro';
+import Layout from '../../layouts/Layout.astro';
+import { getSeriesBySlug, getWatches } from '../../lib/payload';
+import { isPreview } from '../../lib/preview';
+
+const series = await getSeriesBySlug(Astro.params.slug!);
+if (!series) return Astro.rewrite('/404');
+
+const watches = await getWatches({ seriesId: series.id, draft: isPreview(Astro.url) });
+---
+
+<Layout title={series.name} description={series.description} image={series.heroImage}>
+	<section class="relative isolate flex min-h-[50vh] items-end overflow-hidden bg-ink text-paper">
+		<Image media={series.heroImage} size="hero" loading="eager" class="absolute inset-0 -z-10 h-full w-full opacity-70" />
+		<div class="container-page py-12">
+			<h1 class="text-5xl">{series.name}</h1>
+			{series.tagline && <p class="mt-2 text-lg text-paper/80">{series.tagline}</p>}
+		</div>
+	</section>
+	<section class="container-page py-16">
+		{series.description && <p class="max-w-2xl text-black/70">{series.description}</p>}
+		<div class="mt-12 grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+			{watches.map((watch) => <WatchCard watch={watch} />)}
+		</div>
+	</section>
+</Layout>

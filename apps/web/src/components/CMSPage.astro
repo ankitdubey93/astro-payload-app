@@ -1,0 +1,15 @@
+---
+import Layout from '../layouts/Layout.astro';
+import type { Page } from '../payload-types';
+import RenderBlocks from './RenderBlocks.astro';
+
+interface Props {
+	page: Page;
+}
+
+const { page } = Astro.props;
+---
+
+<Layout title={page.meta?.title || page.title} description={page.meta?.description} image={page.meta?.image}>
+	<RenderBlocks blocks={page.layout} />
+</Layout>

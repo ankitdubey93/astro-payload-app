@@ -1,0 +1,13 @@
+---
+import Layout from '../layouts/Layout.astro';
+
+Astro.response.status = 404;
+---
+
+<Layout title="Page not found">
+	<section class="container-page py-32 text-center">
+		<h1 class="text-4xl">Page not found</h1>
+		<p class="mt-4 text-black/60">The page you are looking for doesn't exist.</p>
+		<a href="/" class="mt-8 inline-block underline">Back to home</a>
+	</section>
+</Layout>

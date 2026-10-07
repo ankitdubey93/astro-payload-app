@@ -7,6 +7,10 @@ const __filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(__filename)
 
 const nextConfig: NextConfig = {
+  // The public site is the Astro app; this server only hosts the admin panel and API.
+  async redirects() {
+    return [{ source: '/', destination: '/admin', permanent: false }]
+  },
   images: {
     localPatterns: [
       {

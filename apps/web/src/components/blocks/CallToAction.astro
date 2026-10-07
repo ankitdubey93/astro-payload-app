@@ -1,0 +1,23 @@
+---
+import type { CallToActionBlock } from '../../payload-types';
+import CMSLink from '../CMSLink.astro';
+
+type Props = CallToActionBlock;
+const { heading, text, links } = Astro.props;
+---
+
+<section class="container-page py-16">
+	<div class="bg-accent/10 px-6 py-14 text-center">
+		<h2 class="text-3xl">{heading}</h2>
+		{text && <p class="mx-auto mt-3 max-w-xl text-black/70">{text}</p>}
+		{
+			links && links.length > 0 && (
+				<div class="mt-8 flex flex-wrap justify-center gap-4">
+					{links.map(({ link }, i) => (
+						<CMSLink link={link} appearance={i === 0 ? 'primary' : 'secondary'} />
+					))}
+				</div>
+			)
+		}
+	</div>
+</section>

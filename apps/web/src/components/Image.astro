@@ -1,0 +1,32 @@
+---
+import type { Media } from '../payload-types';
+import { mediaUrl, populated } from '../lib/utils';
+
+interface Props {
+	media?: Media | number | null;
+	size?: 'thumbnail' | 'card' | 'hero';
+	class?: string;
+	loading?: 'lazy' | 'eager';
+}
+
+const { media, size, class: className, loading = 'lazy' } = Astro.props;
+const doc = populated(media);
+const src = mediaUrl(doc, size);
+const dims = (size && doc?.sizes?.[size]) || doc;
+// Respect the focal point editors set in Payload.
+const objectPosition = doc?.focalX != null && doc?.focalY != null ? `${doc.focalX}% ${doc.focalY}%` : undefined;
+---
+
+{
+	src && (
+		<img
+			src={src}
+			alt={doc?.alt ?? ''}
+			width={dims?.width ?? undefined}
+			height={dims?.height ?? undefined}
+			loading={loading}
+			class:list={['object-cover', className]}
+			style={objectPosition ? { objectPosition } : undefined}
+		/>
+	)
+}

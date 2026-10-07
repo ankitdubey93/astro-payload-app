@@ -1,0 +1,25 @@
+---
+import { linkHref, linkTarget, type CMSLink } from '../lib/utils';
+
+interface Props {
+	link?: CMSLink | null;
+	appearance?: 'primary' | 'secondary' | 'inline';
+	class?: string;
+}
+
+const { link, appearance = 'inline', class: className } = Astro.props;
+
+const styles = {
+	primary: 'inline-block bg-ink px-6 py-3 text-sm uppercase tracking-widest text-paper hover:bg-accent',
+	secondary: 'inline-block border border-current px-6 py-3 text-sm uppercase tracking-widest hover:bg-ink hover:text-paper',
+	inline: 'hover:underline',
+};
+---
+
+{
+	link?.label && (
+		<a href={linkHref(link)} {...linkTarget(link)} class:list={[styles[appearance], className]}>
+			{link.label}
+		</a>
+	)
+}

@@ -5,9 +5,12 @@ export const Users: CollectionConfig = {
   admin: {
     useAsTitle: 'email',
   },
-  auth: true,
+  auth: {
+    // Lets the Astro server fetch drafts for Live Preview with an API key.
+    useAPIKey: true,
+  },
   fields: [
     // Email added by default
-    // Add more fields as needed
+    { name: 'name', type: 'text' },
   ],
 }

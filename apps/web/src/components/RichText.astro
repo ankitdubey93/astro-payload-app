@@ -1,0 +1,13 @@
+---
+import { richTextToHTML, type RichTextData } from '../lib/richText';
+
+interface Props {
+	data: unknown;
+	class?: string;
+}
+
+const { data, class: className } = Astro.props;
+const html = richTextToHTML(data as RichTextData);
+---
+
+{html && <div class:list={['prose prose-neutral max-w-none', className]} set:html={html} />}

@@ -1,0 +1,54 @@
+---
+import RichText from '../../components/RichText.astro';
+import WatchGallery from '../../components/WatchGallery.tsx';
+import Layout from '../../layouts/Layout.astro';
+import { getWatchBySlug } from '../../lib/payload';
+import { isPreview } from '../../lib/preview';
+import { formatPrice, mediaUrl, populated } from '../../lib/utils';
+
+const watch = await getWatchBySlug(Astro.params.slug!, { draft: isPreview(Astro.url) });
+if (!watch) return Astro.rewrite('/404');
+
+const series = populated(watch.series);
+const images = (watch.gallery ?? []).flatMap(({ image }) => {
+	const src = mediaUrl(image, 'card');
+	return src ? [{ src, alt: populated(image)?.alt ?? watch.name }] : [];
+});
+
+const { specs } = watch;
+const specRows = [
+	['Reference', watch.reference],
+	['Movement', specs?.movement],
+	['Calibre', specs?.caliber],
+	['Case', specs?.caseMaterial],
+	['Diameter', specs?.caseDiameterMm && `${specs.caseDiameterMm} mm`],
+	['Water resistance', specs?.waterResistanceM && `${specs.waterResistanceM} m`],
+	['Power reserve', specs?.powerReserveH && `${specs.powerReserveH} h`],
+	['Strap', specs?.strap],
+].filter(([, value]) => value);
+---
+
+<Layout title={watch.name} description={watch.shortDescription} image={watch.gallery?.[0]?.image}>
+	<article class="container-page grid gap-12 py-16 md:grid-cols-2">
+		<WatchGallery client:visible images={images} />
+		<div>
+			{series && <a href={`/series/${series.slug}`} class="text-xs uppercase tracking-widest text-accent">{series.name}</a>}
+			<h1 class="mt-2 text-4xl">{watch.name}</h1>
+			<p class="mt-2 text-xl">{formatPrice(watch.price)}</p>
+			{watch.shortDescription && <p class="mt-6 text-black/70">{watch.shortDescription}</p>}
+			<RichText data={watch.description} class="mt-6" />
+			{
+				specRows.length > 0 && (
+					<dl class="mt-10 divide-y divide-black/10 border-y border-black/10 text-sm">
+						{specRows.map(([label, value]) => (
+							<div class="flex justify-between py-3">
+								<dt class="text-black/60">{label}</dt>
+								<dd class="capitalize">{value}</dd>
+							</div>
+						))}
+					</dl>
+				)
+			}
+		</div>
+	</article>
+</Layout>

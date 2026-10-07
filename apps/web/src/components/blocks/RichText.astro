@@ -1,0 +1,11 @@
+---
+import type { RichTextBlock } from '../../payload-types';
+import RichText from '../RichText.astro';
+
+type Props = RichTextBlock;
+const { content } = Astro.props;
+---
+
+<section class="container-page py-16">
+	<RichText data={content} class="mx-auto max-w-3xl" />
+</section>

@@ -1,0 +1,37 @@
+---
+import { PAYLOAD_URL } from 'astro:env/server';
+---
+
+<!-- Reloads the page when the document is (auto)saved in Payload's Live Preview. -->
+<live-preview-listener data-server-url={new URL(PAYLOAD_URL).origin}></live-preview-listener>
+
+<script>
+	import { isDocumentEvent, ready } from '@payloadcms/live-preview';
+
+	class LivePreviewListener extends HTMLElement {
+		connectedCallback() {
+			const serverURL = this.dataset.serverUrl!;
+			let timeout: ReturnType<typeof setTimeout> | undefined;
+
+			window.addEventListener('message', (event) => {
+				if (!isDocumentEvent(event, serverURL)) return;
+				clearTimeout(timeout);
+				timeout = setTimeout(() => refresh(), 100);
+			});
+
+			ready({ serverURL });
+		}
+	}
+
+	/** Re-fetch the page and swap the <main> content, keeping scroll position. */
+	async function refresh() {
+		const res = await fetch(window.location.href, { cache: 'no-store' });
+		const doc = new DOMParser().parseFromString(await res.text(), 'text/html');
+		const next = doc.querySelector('#page');
+		const current = document.querySelector('#page');
+		if (next && current) current.replaceWith(next);
+		else window.location.reload();
+	}
+
+	customElements.define('live-preview-listener', LivePreviewListener);
+</script>

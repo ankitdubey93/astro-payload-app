@@ -1,0 +1,10 @@
+---
+import CMSPage from '../components/CMSPage.astro';
+import { getPageBySlug } from '../lib/payload';
+import { isPreview } from '../lib/preview';
+
+const page = await getPageBySlug('home', { draft: isPreview(Astro.url) });
+if (!page) return Astro.rewrite('/404');
+---
+
+<CMSPage page={page} />

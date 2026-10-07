@@ -1,0 +1,26 @@
+---
+import type { HeroBlock } from '../../payload-types';
+import CMSLink from '../CMSLink.astro';
+import Image from '../Image.astro';
+
+type Props = HeroBlock;
+const { eyebrow, heading, subheading, image, cta } = Astro.props;
+---
+
+<section class="relative isolate flex min-h-[70vh] items-end overflow-hidden bg-ink text-paper">
+	<Image media={image} size="hero" loading="eager" class="absolute inset-0 -z-10 h-full w-full opacity-70" />
+	<div class="container-page py-16">
+		{eyebrow && <p class="mb-3 text-sm uppercase tracking-widest">{eyebrow}</p>}
+		<h1 class="max-w-3xl text-5xl leading-tight sm:text-6xl">{heading}</h1>
+		{subheading && <p class="mt-4 max-w-xl text-lg text-paper/80">{subheading}</p>}
+		{
+			cta && cta.length > 0 && (
+				<div class="mt-8 flex flex-wrap gap-4">
+					{cta.map(({ link }, i) => (
+						<CMSLink link={link} appearance={i === 0 ? 'primary' : 'secondary'} class={i === 0 ? 'bg-paper !text-ink hover:!text-paper' : ''} />
+					))}
+				</div>
+			)
+		}
+	</div>
+</section>

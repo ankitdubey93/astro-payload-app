@@ -1,0 +1,23 @@
+---
+import type { FeaturedWatchesBlock, Watch } from '../../payload-types';
+import { getWatches } from '../../lib/payload';
+import { isPreview } from '../../lib/preview';
+import { populated } from '../../lib/utils';
+import WatchCard from '../WatchCard.astro';
+
+type Props = FeaturedWatchesBlock;
+const { heading, intro, source, watches, limit } = Astro.props;
+
+const list: Watch[] =
+	source === 'manual'
+		? (watches ?? []).map((w) => populated(w)).filter((w): w is Watch => Boolean(w))
+		: await getWatches({ featured: true, limit: limit ?? 3, draft: isPreview(Astro.url) });
+---
+
+<section class="container-page py-16">
+	{heading && <h2 class="text-3xl">{heading}</h2>}
+	{intro && <p class="mt-2 max-w-2xl text-black/60">{intro}</p>}
+	<div class="mt-10 grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+		{list.map((watch) => <WatchCard watch={watch} />)}
+	</div>
+</section>

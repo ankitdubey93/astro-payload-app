@@ -1,0 +1,52 @@
+---
+import '../styles/global.css';
+
+import Footer from '../components/Footer.astro';
+import Header from '../components/Header.astro';
+import LivePreviewListener from '../components/LivePreviewListener.astro';
+import type { Media } from '../payload-types';
+import { getFooter, getHeader } from '../lib/payload';
+import { isPreview } from '../lib/preview';
+import { mediaUrl } from '../lib/utils';
+
+interface Props {
+	title?: string | null;
+	description?: string | null;
+	image?: Media | number | null;
+}
+
+const SITE_NAME = 'Watch Co.'; // Placeholder until the brand name is confirmed.
+
+const { title, description, image } = Astro.props;
+const preview = isPreview(Astro.url);
+const [header, footer] = await Promise.all([getHeader({ draft: preview }), getFooter({ draft: preview })]);
+const pageTitle = title ? `${title} | ${SITE_NAME}` : SITE_NAME;
+const ogImage = mediaUrl(image ?? null);
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<link rel="icon" href="/favicon.ico" />
+		<meta name="generator" content={Astro.generator} />
+		<title>{pageTitle}</title>
+		{description && <meta name="description" content={description} />}
+		<meta property="og:title" content={pageTitle} />
+		{description && <meta property="og:description" content={description} />}
+		{ogImage && <meta property="og:image" content={ogImage} />}
+		{preview && <meta name="robots" content="noindex" />}
+	</head>
+	<body class="min-h-screen">
+		<div id="page" class="flex min-h-screen flex-col">
+			<Header header={header} siteName={SITE_NAME} />
+			<main class="flex-1">
+				<slot />
+			</main>
+			<Footer footer={footer} />
+		</div>
+		{preview && <LivePreviewListener />}
+	</body>
+</html>

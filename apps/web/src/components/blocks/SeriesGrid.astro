@@ -1,0 +1,29 @@
+---
+import type { Series, SeriesGridBlock } from '../../payload-types';
+import { getAllSeries } from '../../lib/payload';
+import { populated } from '../../lib/utils';
+import Image from '../Image.astro';
+
+type Props = SeriesGridBlock;
+const { heading, series } = Astro.props;
+
+const picked = (series ?? []).map((s) => populated(s)).filter((s): s is Series => Boolean(s));
+const list = picked.length > 0 ? picked : await getAllSeries();
+---
+
+<section class="container-page py-16">
+	{heading && <h2 class="mb-10 text-3xl">{heading}</h2>}
+	<div class="grid gap-6 md:grid-cols-3">
+		{
+			list.map((s) => (
+				<a href={`/series/${s.slug}`} class="group relative block aspect-[3/4] overflow-hidden bg-ink text-paper">
+					<Image media={s.heroImage} size="card" class="absolute inset-0 h-full w-full opacity-80 transition duration-500 group-hover:scale-105" />
+					<div class="absolute inset-x-0 bottom-0 p-6">
+						<h3 class="text-2xl">{s.name}</h3>
+						{s.tagline && <p class="text-sm text-paper/80">{s.tagline}</p>}
+					</div>
+				</a>
+			))
+		}
+	</div>
+</section>

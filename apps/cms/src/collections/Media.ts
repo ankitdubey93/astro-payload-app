@@ -1,9 +1,14 @@
 import type { CollectionConfig } from 'payload'
 
+import { anyone, authenticated } from '../access'
+
 export const Media: CollectionConfig = {
   slug: 'media',
   access: {
-    read: () => true,
+    create: authenticated,
+    read: anyone,
+    update: authenticated,
+    delete: authenticated,
   },
   fields: [
     {
@@ -12,5 +17,13 @@ export const Media: CollectionConfig = {
       required: true,
     },
   ],
-  upload: true,
+  upload: {
+    focalPoint: true,
+    imageSizes: [
+      { name: 'thumbnail', width: 400, height: 400 },
+      { name: 'card', width: 800, height: 1000 },
+      { name: 'hero', width: 1920 },
+    ],
+    mimeTypes: ['image/*'],
+  },
 }

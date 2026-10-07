@@ -1,19 +1,25 @@
 {
   "name": "astro-payload-app",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "private": true,
+  "description": "Watch brand website: Payload CMS (apps/cms) + Astro frontend (apps/web)",
+  "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "install:all": "npm install && npm --prefix apps/cms install && npm --prefix apps/web install",
+    "dev": "concurrently -n cms,web -c blue,magenta \"npm:dev:cms\" \"npm:dev:web\"",
+    "dev:cms": "npm --prefix apps/cms run dev",
+    "dev:web": "npm --prefix apps/web run dev",
+    "build": "npm --prefix apps/cms run build && npm --prefix apps/web run build",
+    "seed": "npm --prefix apps/cms run seed",
+    "types:sync": "npm --prefix apps/cms run generate:types && node scripts/sync-types.mjs",
+    "check": "npm --prefix apps/cms run typecheck && npm --prefix apps/web run check"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/ankitdubey93/astro-payload-app.git"
   },
-  "author": "",
   "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/ankitdubey93/astro-payload-app/issues"
-  },
-  "homepage": "https://github.com/ankitdubey93/astro-payload-app#readme"
+  "devDependencies": {
+    "concurrently": "^10.0.5"
+  }
 }

@@ -1,0 +1,46 @@
+---
+import type { Footer } from '../payload-types';
+import CMSLink from './CMSLink.astro';
+
+interface Props {
+	footer: Footer;
+}
+
+const { footer } = Astro.props;
+---
+
+<footer class="mt-24 bg-ink text-paper">
+	<div class="container-page grid gap-10 py-16 sm:grid-cols-2 lg:grid-cols-4">
+		{
+			footer.columns?.map((column) => (
+				<div>
+					<h2 class="mb-4 text-sm uppercase tracking-widest text-paper/60">{column.heading}</h2>
+					<ul class="space-y-2">
+						{column.links?.map(({ link }) => (
+							<li>
+								<CMSLink link={link} />
+							</li>
+						))}
+					</ul>
+				</div>
+			))
+		}
+		{
+			footer.socialLinks && footer.socialLinks.length > 0 && (
+				<div>
+					<h2 class="mb-4 text-sm uppercase tracking-widest text-paper/60">Follow</h2>
+					<ul class="space-y-2 capitalize">
+						{footer.socialLinks.map((social) => (
+							<li>
+								<a href={social.url} target="_blank" rel="noopener noreferrer" class="hover:underline">
+									{social.platform}
+								</a>
+							</li>
+						))}
+					</ul>
+				</div>
+			)
+		}
+	</div>
+	{footer.copyright && <p class="container-page pb-8 text-xs text-paper/50">{footer.copyright}</p>}
+</footer>

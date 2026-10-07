@@ -1,0 +1,23 @@
+---
+import type { GalleryBlock } from '../../payload-types';
+import Image from '../Image.astro';
+
+type Props = GalleryBlock;
+const { heading, images } = Astro.props;
+---
+
+<section class="container-page py-16">
+	{heading && <h2 class="mb-10 text-3xl">{heading}</h2>}
+	<div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+		{
+			images?.map(({ image, caption }) => (
+				<figure>
+					<div class="aspect-square overflow-hidden">
+						<Image media={image} size="card" class="h-full w-full" />
+					</div>
+					{caption && <figcaption class="mt-2 text-sm text-black/60">{caption}</figcaption>}
+				</figure>
+			))
+		}
+	</div>
+</section>

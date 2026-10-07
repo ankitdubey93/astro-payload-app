@@ -1,0 +1,20 @@
+---
+import type { ImageWithTextBlock } from '../../payload-types';
+import CMSLink from '../CMSLink.astro';
+import Image from '../Image.astro';
+import RichText from '../RichText.astro';
+
+type Props = ImageWithTextBlock;
+const { image, imagePosition, heading, content, enableLink, link } = Astro.props;
+---
+
+<section class="container-page grid items-center gap-10 py-16 md:grid-cols-2">
+	<div class:list={['aspect-[4/3] overflow-hidden', imagePosition === 'right' && 'md:order-last']}>
+		<Image media={image} size="card" class="h-full w-full" />
+	</div>
+	<div>
+		{heading && <h2 class="mb-4 text-3xl">{heading}</h2>}
+		<RichText data={content} />
+		{enableLink && <CMSLink link={link} appearance="secondary" class="mt-6" />}
+	</div>
+</section>

@@ -1,0 +1,34 @@
+---
+import type { Page } from '../payload-types';
+import CallToAction from './blocks/CallToAction.astro';
+import FeaturedWatches from './blocks/FeaturedWatches.astro';
+import Gallery from './blocks/Gallery.astro';
+import Hero from './blocks/Hero.astro';
+import ImageWithText from './blocks/ImageWithText.astro';
+import RichText from './blocks/RichText.astro';
+import SeriesGrid from './blocks/SeriesGrid.astro';
+
+interface Props {
+	blocks: Page['layout'];
+}
+
+// One Astro component per Payload block slug. Add new blocks here and in apps/cms/src/blocks.
+const components = {
+	hero: Hero,
+	richText: RichText,
+	featuredWatches: FeaturedWatches,
+	imageWithText: ImageWithText,
+	seriesGrid: SeriesGrid,
+	callToAction: CallToAction,
+	gallery: Gallery,
+} as const;
+
+const { blocks } = Astro.props;
+---
+
+{
+	blocks?.map((block) => {
+		const Component = components[block.blockType] as any;
+		return Component ? <Component {...block} /> : null;
+	})
+}

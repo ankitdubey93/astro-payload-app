@@ -1,0 +1,29 @@
+---
+import type { Header } from '../payload-types';
+import CMSLink from './CMSLink.astro';
+import Image from './Image.astro';
+
+interface Props {
+	header: Header;
+	siteName: string;
+}
+
+const { header, siteName } = Astro.props;
+---
+
+<header class="border-b border-black/10">
+	<div class="container-page flex flex-wrap items-center justify-between gap-4 py-5">
+		<a href="/" class="font-display text-xl tracking-wide">
+			{header.logo ? <Image media={header.logo} class="h-8 w-auto" loading="eager" /> : siteName}
+		</a>
+		<nav aria-label="Main">
+			<ul class="flex flex-wrap gap-x-6 gap-y-2 text-sm uppercase tracking-widest">
+				{header.navItems?.map(({ link }) => (
+					<li>
+						<CMSLink link={link} />
+					</li>
+				))}
+			</ul>
+		</nav>
+	</div>
+</header>

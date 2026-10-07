@@ -1,0 +1,24 @@
+---
+import type { Watch } from '../payload-types';
+import { formatPrice, populated } from '../lib/utils';
+import Image from './Image.astro';
+
+interface Props {
+	watch: Watch;
+}
+
+const { watch } = Astro.props;
+const series = populated(watch.series);
+const image = watch.gallery?.[0]?.image;
+---
+
+<a href={`/watches/${watch.slug}`} class="group block">
+	<div class="aspect-[4/5] overflow-hidden bg-black/5">
+		<Image media={image} size="card" class="h-full w-full transition duration-500 group-hover:scale-105" />
+	</div>
+	<div class="mt-4 space-y-1">
+		{series && <p class="text-xs uppercase tracking-widest text-accent">{series.name}</p>}
+		<h3 class="text-lg">{watch.name}</h3>
+		<p class="text-sm text-black/60">{formatPrice(watch.price)}</p>
+	</div>
+</a>

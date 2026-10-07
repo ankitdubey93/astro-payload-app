@@ -1,0 +1,21 @@
+---
+import WatchCard from '../../components/WatchCard.astro';
+import Layout from '../../layouts/Layout.astro';
+import { getAllSeries, getWatches } from '../../lib/payload';
+import { isPreview } from '../../lib/preview';
+
+const draft = isPreview(Astro.url);
+const [watches, series] = await Promise.all([getWatches({ draft }), getAllSeries()]);
+---
+
+<Layout title="Watches" description="All watches.">
+	<section class="container-page py-16">
+		<h1 class="text-4xl">Watches</h1>
+		<nav aria-label="Series" class="mt-6 flex flex-wrap gap-4 text-sm uppercase tracking-widest">
+			{series.map((s) => <a href={`/series/${s.slug}`} class="hover:underline">{s.name}</a>)}
+		</nav>
+		<div class="mt-12 grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+			{watches.map((watch) => <WatchCard watch={watch} />)}
+		</div>
+	</section>
+</Layout>
