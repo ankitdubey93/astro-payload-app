@@ -5,7 +5,7 @@ import { getAllSeries, getWatches } from '../../lib/payload';
 import { isPreview } from '../../lib/preview';
 
 const draft = isPreview(Astro.url);
-const [watches, series] = await Promise.all([getWatches({ draft }), getAllSeries()]);
+const [watches, series] = await Promise.all([getWatches({ draft }), getAllSeries({ draft })]);
 ---
 
 <Layout title="Watches" description="All watches.">

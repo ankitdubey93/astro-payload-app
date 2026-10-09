@@ -1,7 +1,9 @@
 import type { CollectionConfig } from 'payload'
 
-import { anyone, authenticated } from '../access'
+import { authenticated, publishedOrAuthenticated } from '../access'
 import { slugField } from '../fields/slug'
+import { AUTOSAVE_INTERVAL } from '../utilities/autosave'
+import { previewURL } from '../utilities/previewURL'
 
 export const Series: CollectionConfig = {
   slug: 'series',
@@ -10,10 +12,14 @@ export const Series: CollectionConfig = {
     useAsTitle: 'name',
     defaultColumns: ['name', 'slug', 'updatedAt'],
     description: 'Watch lines, e.g. Diver, Dress, Chronograph.',
+    livePreview: {
+      url: ({ data }) => (data?.slug ? previewURL(`/series/${data.slug}`) : null),
+    },
+    preview: (data) => (data?.slug ? previewURL(`/series/${data.slug}`) : null),
   },
   access: {
     create: authenticated,
-    read: anyone,
+    read: publishedOrAuthenticated,
     update: authenticated,
     delete: authenticated,
   },
@@ -24,4 +30,10 @@ export const Series: CollectionConfig = {
     { name: 'description', type: 'textarea' },
     { name: 'heroImage', type: 'upload', relationTo: 'media' },
   ],
+  versions: {
+    drafts: {
+      autosave: { interval: AUTOSAVE_INTERVAL },
+    },
+    maxPerDoc: 50,
+  },
 }

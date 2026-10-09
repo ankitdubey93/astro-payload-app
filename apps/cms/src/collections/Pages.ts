@@ -3,6 +3,7 @@ import type { CollectionConfig } from 'payload'
 import { authenticated, publishedOrAuthenticated } from '../access'
 import { pageBlocks } from '../blocks'
 import { slugField } from '../fields/slug'
+import { AUTOSAVE_INTERVAL } from '../utilities/autosave'
 import { pagePath, previewURL } from '../utilities/previewURL'
 
 export const Pages: CollectionConfig = {
@@ -46,7 +47,7 @@ export const Pages: CollectionConfig = {
   ],
   versions: {
     drafts: {
-      autosave: { interval: 375 },
+      autosave: { interval: AUTOSAVE_INTERVAL },
     },
     maxPerDoc: 50,
   },

@@ -2,6 +2,7 @@ import type { CollectionConfig } from 'payload'
 
 import { authenticated, publishedOrAuthenticated } from '../access'
 import { slugField } from '../fields/slug'
+import { AUTOSAVE_INTERVAL } from '../utilities/autosave'
 import { previewURL } from '../utilities/previewURL'
 
 export const Watches: CollectionConfig = {
@@ -103,7 +104,7 @@ export const Watches: CollectionConfig = {
   ],
   versions: {
     drafts: {
-      autosave: { interval: 375 },
+      autosave: { interval: AUTOSAVE_INTERVAL },
     },
     maxPerDoc: 50,
   },

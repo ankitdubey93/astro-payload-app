@@ -116,7 +116,7 @@ for (const s of seriesData) {
   const image = await placeholderImage(`series-${s.slug}`, s.colors[0], s.colors[1], `${s.name} series`)
   const doc = await payload.create({
     collection: 'series',
-    data: { name: s.name, slug: s.slug, tagline: s.tagline, description: s.description, heroImage: image.id },
+    data: { _status: 'published', name: s.name, slug: s.slug, tagline: s.tagline, description: s.description, heroImage: image.id },
   })
   seriesBySlug[s.slug] = doc.id
 }
@@ -236,6 +236,7 @@ payload.logger.info('Seed: header & footer…')
 await payload.updateGlobal({
   slug: 'header',
   data: {
+    _status: 'published',
     navItems: [
       { link: { type: 'custom', url: '/watches', label: 'Watches' } },
       { link: { type: 'custom', url: '/series/abyss', label: 'Abyss' } },
@@ -248,6 +249,7 @@ await payload.updateGlobal({
 await payload.updateGlobal({
   slug: 'footer',
   data: {
+    _status: 'published',
     columns: [
       {
         heading: 'Collections',

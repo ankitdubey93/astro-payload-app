@@ -1,13 +1,14 @@
 import type { GlobalConfig } from 'payload'
 
-import { anyone, authenticated } from '../access'
+import { authenticated, publishedOrAuthenticated } from '../access'
 import { linkField } from '../fields/link'
+import { AUTOSAVE_INTERVAL } from '../utilities/autosave'
 import { previewURL } from '../utilities/previewURL'
 
 export const Footer: GlobalConfig = {
   slug: 'footer',
   access: {
-    read: anyone,
+    read: publishedOrAuthenticated,
     update: authenticated,
   },
   admin: {
@@ -41,4 +42,10 @@ export const Footer: GlobalConfig = {
     },
     { name: 'copyright', type: 'text' },
   ],
+  versions: {
+    drafts: {
+      autosave: { interval: AUTOSAVE_INTERVAL },
+    },
+    max: 50,
+  },
 }

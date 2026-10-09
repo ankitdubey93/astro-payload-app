@@ -345,6 +345,7 @@ export interface Series {
   heroImage?: (number | null) | Media;
   updatedAt: string;
   createdAt: string;
+  _status?: ('draft' | 'published') | null;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -747,6 +748,7 @@ export interface SeriesSelect<T extends boolean = true> {
   heroImage?: T;
   updatedAt?: T;
   createdAt?: T;
+  _status?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -887,6 +889,7 @@ export interface Header {
         id?: string | null;
       }[]
     | null;
+  _status?: ('draft' | 'published') | null;
   updatedAt?: string | null;
   createdAt?: string | null;
 }
@@ -922,6 +925,7 @@ export interface Footer {
       }[]
     | null;
   copyright?: string | null;
+  _status?: ('draft' | 'published') | null;
   updatedAt?: string | null;
   createdAt?: string | null;
 }
@@ -945,6 +949,7 @@ export interface HeaderSelect<T extends boolean = true> {
             };
         id?: T;
       };
+  _status?: T;
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;
@@ -982,6 +987,7 @@ export interface FooterSelect<T extends boolean = true> {
         id?: T;
       };
   copyright?: T;
+  _status?: T;
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;

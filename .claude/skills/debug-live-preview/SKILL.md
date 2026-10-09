@@ -25,6 +25,6 @@ description: Diagnose Payload Live Preview / draft problems — preview iframe b
 4. **Listener rendered**: the preview HTML contains `<live-preview-listener data-server-url="http://localhost:3000">`. The origin must exactly match the admin's origin, so `localhost` vs `127.0.0.1` matters.
 5. **New route not updating**: the page must pass `{ draft: isPreview(Astro.url) }` to **every** fetch, including fetches inside blocks, and render inside `Layout.astro`, which owns `#page` and the listener.
 6. **CORS / iframe**: the cms `cors`/`csrf` must include `WEB_URL`. If a host adds `X-Frame-Options` or CSP `frame-ancestors` to the Astro site, allow the CMS origin.
-7. **Globals (Header/Footer)** have no drafts. Their preview refreshes on **Save**, not on every keystroke.
+7. **Preview refreshes only after the autosave delay**: `AUTOSAVE_INTERVAL` (`apps/cms/src/utilities/autosave.ts`) is how long the editor must stop typing. Collections or globals without `versions.drafts.autosave` refresh only on **Save**.
 
 Clicking links inside the preview iframe drops `?preview=`, so it shows published content. This is expected behaviour.

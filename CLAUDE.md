@@ -30,7 +30,7 @@ App-specific guidance:
 
 ## How the pieces connect
 
-- **Content model**: `apps/cms/src/{collections,globals,blocks,fields,access}`. Pages use a `layout` blocks field. Pages and Watches have drafts + autosave.
+- **Content model**: `apps/cms/src/{collections,globals,blocks,fields,access}`. Pages use a `layout` blocks field. Pages, Watches, Series and the Header/Footer globals have drafts + autosave; the delay is `AUTOSAVE_INTERVAL` in `apps/cms/src/utilities/autosave.ts`.
 - **Frontend data**: `apps/web/src/lib/payload.ts` is a typed REST client. Use these helpers instead of calling `fetch` in pages. Pass `{ draft: isPreview(Astro.url) }` everywhere content is fetched so Live Preview shows drafts.
 - **Block rendering**: each CMS block slug maps to `apps/web/src/components/blocks/<Name>.astro`, registered in `apps/web/src/components/RenderBlocks.astro`. Block props are the generated `<Name>Block` interface.
 - **Live Preview**: the CMS `admin.livePreview.url` → `WEB_URL/<path>?preview=PREVIEW_SECRET`. Astro then fetches drafts with the preview user's API key, and `LivePreviewListener.astro` swaps `#page` on Payload's `payload-document-event`.

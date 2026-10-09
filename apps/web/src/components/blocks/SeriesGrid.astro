@@ -1,6 +1,7 @@
 ---
 import type { Series, SeriesGridBlock } from '../../payload-types';
 import { getAllSeries } from '../../lib/payload';
+import { isPreview } from '../../lib/preview';
 import { populated } from '../../lib/utils';
 import Image from '../Image.astro';
 
@@ -8,7 +9,7 @@ type Props = SeriesGridBlock;
 const { heading, series } = Astro.props;
 
 const picked = (series ?? []).map((s) => populated(s)).filter((s): s is Series => Boolean(s));
-const list = picked.length > 0 ? picked : await getAllSeries();
+const list = picked.length > 0 ? picked : await getAllSeries({ draft: isPreview(Astro.url) });
 ---
 
 <section class="container-page py-16">

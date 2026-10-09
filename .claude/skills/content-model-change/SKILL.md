@@ -13,7 +13,7 @@ For Payload API details (field types, hooks, access), consult `apps/cms/.claude/
    - Register new collections and globals in `apps/cms/src/payload.config.ts`.
    - Access: public-readable plus `authenticated` writes (`apps/cms/src/access`). For draft-enabled collections, read access is `publishedOrAuthenticated`.
    - URL-addressable docs: `slugField('<titleField>')`, plus `admin.livePreview.url` / `admin.preview` built with `previewURL()` from `apps/cms/src/utilities/previewURL.ts`.
-   - Editable visual content: `versions: { drafts: { autosave: { interval: 375 } } }`.
+   - Editable visual content: `versions: { drafts: { autosave: { interval: AUTOSAVE_INTERVAL } } }` (from `apps/cms/src/utilities/autosave.ts`).
    - If you add an upload or relationship to a **new** collection, also add that slug to `relationTo`.
 2. **Regenerate**: `npm run types:sync`. For new admin components, also run `npm --prefix apps/cms run generate:importmap`.
 3. **Frontend**:

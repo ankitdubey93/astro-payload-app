@@ -5,10 +5,11 @@ import Layout from '../../layouts/Layout.astro';
 import { getSeriesBySlug, getWatches } from '../../lib/payload';
 import { isPreview } from '../../lib/preview';
 
-const series = await getSeriesBySlug(Astro.params.slug!);
+const draft = isPreview(Astro.url);
+const series = await getSeriesBySlug(Astro.params.slug!, { draft });
 if (!series) return Astro.rewrite('/404');
 
-const watches = await getWatches({ seriesId: series.id, draft: isPreview(Astro.url) });
+const watches = await getWatches({ seriesId: series.id, draft });
 ---
 
 <Layout title={series.name} description={series.description} image={series.heroImage}>
